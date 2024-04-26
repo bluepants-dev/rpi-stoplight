@@ -1,0 +1,67 @@
+---
+- name: Install missing python3 packages
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  failed_when: false
+  loop:
+    - python3-venv
+  tags:
+    - packages
+    - slow
+  become: true
+
+- name: Ensure /opt/venv/rpi_stoplight directory exists
+  ansible.builtin.file:
+    path: /opt/venv/rpi_stoplight
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Create a virtual environment in /opt/venv/rpi_stoplight
+  ansible.builtin.command:
+    cmd: python3 -m venv /opt/venv/rpi_stoplight
+    creates: /opt/venv/rpi_stoplight/bin/activate
+  become: true
+
+- name: Install pip packages
+  ansible.builtin.pip:
+    name:
+      - smbus
+      - RPi.GPIO
+    executable: /opt/venv/rpi_stoplight/bin/pip
+
+- name: Copy the rpi_stoplight script
+  template:
+    dest: /opt/venv/rpi_stoplight/bin/rpi_stoplight.py
+    src: rpi_stoplight.py
+    owner: "{{ansible_user}}"
+    group: "{{ansible_user}}"
+    mode: 0750
+  become: true
+
+
+- name: Install unit files for rpi_stoplight
+  ansible.builtin.template:
+    dest: /etc/systemd/system
+    src: "{{ item }}"
+  loop:
+    - rpi_stoplight.service
+    - rpi_stoplight.timer
+  become: true
+
+- name: Enable rpi_stoplight service
+  ansible.builtin.service:
+    name: rpi_stoplight.service
+    state: started
+    enabled: true
+    daemon_reload: true
+  become: true
+
+- name: Enable rpi_stoplight timer
+  ansible.builtin.service:
+    name: rpi_stoplight.timer
+    state: started
+    enabled: true
+    daemon_reload: true
+  become: true

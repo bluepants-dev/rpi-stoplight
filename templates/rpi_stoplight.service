@@ -1,0 +1,15 @@
+{{ ansible_managed|comment }}
+
+[Install]
+WantedBy=multi-user.target
+
+[Unit]
+Description=rpi_stoplight service
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/venv/rpi_stoplight
+User=root
+Group=root
+ExecStart=/opt/venv/rpi_stoplight/bin/python3 /opt/venv/rpi_stoplight/bin/rpi_stoplight.py --no-print
+TimeoutStopSec=1200

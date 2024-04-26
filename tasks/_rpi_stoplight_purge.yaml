@@ -1,0 +1,38 @@
+---
+
+- name: Stop and disable rpi_stoplight timer
+  ansible.builtin.service:
+    name: rpi_stoplight.timer
+    state: stopped
+    enabled: false
+    daemon_reload: true
+  become: true
+
+- name: Stop and disable rpi_stoplight service
+  ansible.builtin.service:
+    name: rpi_stoplight.service
+    state: stopped
+    enabled: false
+    daemon_reload: true
+  become: true
+
+- name: Remove unit files for rpi_stoplight
+  ansible.builtin.file:
+    path: /etc/systemd/system/{{ item }}
+    state: absent
+  loop:
+    - rpi_stoplight.service
+    - rpi_stoplight.timer
+  become: true
+
+- name: Remove the rpi_stoplight script
+  ansible.builtin.file:
+    path: /opt/venv/rpi_stoplight/bin/rpi_stoplight.py
+    state: absent
+  become: true
+
+- name: Remove /opt/venv/rpi_stoplight directory
+  ansible.builtin.file:
+    path: /opt/venv/rpi_stoplight
+    state: absent
+  become: true

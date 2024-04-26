@@ -1,0 +1,15 @@
+---
+# defaults file for pi_stoplight
+rpi_stoplight_timer_boot: 10
+rpi_stoplight_oncalendar: '*-*-* *:00:00'
+rpi_stoplight_offcalendar: '*-*-* *:00:00'
+rpi_stoplight_enabled: false
+rpi_stoplight_rnddelaysecs: 3
+rpi_stoplight_rnddelaymins: 0
+rpi_stoplight_rnddelayhrs: 0
+rpi_stoplight_rnddelaydays: 0
+rpi_stoplight_rnddelayweeks: 0
+rpi_stoplight_rnddelaymonths: 0
+rpi_stoplight_rnddelayyears: 0
+rpi_stoplight_rnddelay: 0
+rpi_stoplight_rnddelayunit: 'seconds'

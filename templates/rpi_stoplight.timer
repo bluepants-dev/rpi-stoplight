@@ -1,0 +1,15 @@
+{{ ansible_managed|comment }}
+
+[Unit]
+Description=pi_stoplight
+
+[Timer]
+OnBootSec={{ rpi_stoplight_timer_boot }}
+OnUnitActiveSec=3h
+# OnCalendar={{ rpi_stoplight_oncalendar }}
+RandomizedDelaySec={{ rpi_stoplight_rnddelaysecs }}
+Unit=rpi_stoplight.service
+Persistent=true
+
+[Install]
+WantedBy=multi-user.target

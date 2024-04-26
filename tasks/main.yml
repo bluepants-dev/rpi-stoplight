@@ -1,0 +1,16 @@
+---
+# tasks file for pi_stoplight
+
+- name: Deploy rpi_stoplight in enabled systems
+  ansible.builtin.include_tasks: _rpi_stoplight_deploy.yaml
+  when: rpi_stoplight_enabled
+  tags:
+    - deploy
+    - configure
+
+- name: Purge rpi_stoplight from disabled systems
+  ansible.builtin.include_tasks: _rpi_stoplight_purge.yaml
+  when: rpi_stoplight_enabled == 'purge'
+  tags:
+    - remove
+    - configure
